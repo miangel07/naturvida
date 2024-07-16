@@ -1,4 +1,4 @@
-import { Conexion } from "@/libs/mongodb";
+import { Conexion } from "../../../../libs/mongodb";
 import vendedores from "@/models/vendedores";
 import { NextResponse } from "next/server";
 import bcryptjs from 'bcryptjs';

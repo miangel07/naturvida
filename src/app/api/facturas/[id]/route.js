@@ -1,4 +1,4 @@
-import { Conexion } from "@/libs/mongodb";
+import { Conexion } from "../../../../../libs/mongodb";
 import detalleModels from "@/models/factura";
 import { NextResponse } from "next/server";
 

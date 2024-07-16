@@ -1,14 +1,12 @@
-import { Conexion } from "@/libs/mongodb";
+import { Conexion } from "../../../../libs/mongodb";
 import clienteModels from "@/models/clientes";
 import { NextResponse } from "next/server";
 import { validarToken } from "../login/route";
+
 export async function GET(request) {
   try {
     await Conexion();
-    let token_user = request.headers["token"];
-    if (!token_user) {
-      return NextResponse.json({ mensaje: "Se requiere un token" });
-    }
+   
 
     const clientes = await clienteModels.find();
     if (clientes) {

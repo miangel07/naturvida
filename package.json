@@ -13,8 +13,11 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.5.0",
     "next": "14.2.4",
+    "next-swagger-doc": "^0.4.0",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-react": "^5.17.14"
   },
   "devDependencies": {
     "eslint": "^8",
