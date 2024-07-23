@@ -12,37 +12,34 @@ export async function POST(request) {
     const password = data.password;
 
     const login = await vendedoresModels.findOne({ usuario });
-    console.log(login);
-    const isPasswordValid = await bcryptjs.compare(password, login.password);
 
-    if (isPasswordValid && login) {
-      const token = jwt.sign({ usuario }, process.env.SECRET, {
-        expiresIn: process.env.TIME,
-      });
+    const isPasswordValid = await bcryptjs.compare(password, login.password);
+    if (!login) {
       return NextResponse.json({
-        status: 200,
-        message: "Inicio de Sesion exitoso",
+        status: 400,
+        message: "Contraseña o usuario incorrecto",
+      });
+    }
+
+    if (!isPasswordValid) {
+      return NextResponse.json({
+        status: 400,
+        message: "Contraseña o usuario incorrecto",
         token,
       });
     }
+    const token = jwt.sign({ usuario }, process.env.SECRET, {
+      expiresIn: process.env.TIME,
+    });
     return NextResponse.json({
-      status: 404,
-      message: "Usuario o contraseña incorrecta",
+      status: 200,
+      message: "Inicio de Sesion exitoso",
+      token,
     });
   } catch (error) {
-    console.error(error);
+    return NextResponse.json({
+      status: 500,
+      message: "Usuario o contraseña incorrecta",
+    });
   }
 }
-export const validarToken = async (req, res) => {
-  let token_user = req.headers["token"];
-  if (!token_user) {
-    return NextResponse.json(res, { mensaje: "Se requiere un token" });
-  } else {
-    try {
-      const decode = jwt.verify(token_user, process.env.SECRET);
-      next();
-    } catch (error) {
-      return NextResponse.json(res, { mensaje: "Token inválido" });
-    }
-  }
-};

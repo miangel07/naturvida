@@ -1,12 +1,11 @@
 import { Conexion } from "../../../../libs/mongodb";
 import clienteModels from "@/models/clientes";
 import { NextResponse } from "next/server";
-import { validarToken } from "../login/route";
+import { validarToken } from "@/utils/middleware/auth";
 
-export async function GET(request) {
+export async function GET(req) {
   try {
     await Conexion();
-   
 
     const clientes = await clienteModels.find();
     if (clientes) {
