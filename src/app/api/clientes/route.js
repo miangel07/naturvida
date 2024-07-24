@@ -1,9 +1,11 @@
 import { Conexion } from "../../../../libs/mongodb";
 import clienteModels from "@/models/clientes";
 import { NextResponse } from "next/server";
-import { validarToken } from "@/utils/middleware/auth";
+import { verificarToken } from "@/utils/middleware/token";
 
 export async function GET(req) {
+/*   const token = await verificarToken(req);
+  if (token) return token; */
   try {
     await Conexion();
 
@@ -29,18 +31,20 @@ export async function GET(req) {
   }
 }
 export async function POST(request) {
-  validarToken(request, NextResponse, async () => {
-    try {
-      await Conexion();
-      const token = request.hedears.get("token");
-      if (!token) {
-        return NextResponse.json({ message: "Token invalido" });
-      }
-      const data = await request.json();
-      const cliente = await clienteModels.create(data);
-      return NextResponse.json(cliente);
-    } catch (error) {
-      console.log(error);
+  try {
+    await Conexion();
+
+    const data = await request.json();
+    const cliente = await clienteModels.create(data);
+    if (cliente) {
+      return NextResponse.json({
+        status: 201,
+        message: "Cliente creado correctamente",
+        data: cliente,
+      });
     }
-  });
+    return NextResponse.json({ message: "Error al crear el Cliente" });
+  } catch (error) {
+    console.log(error);
+  }
 }

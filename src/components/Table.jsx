@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
 import { useClienteQuery } from "@/store/clientes";
 import { Button } from "primereact/button";
+import { useRefresh } from "@/context";
 
 const TableComponent = () => {
-  const { data: clientes, isLoading } = useClienteQuery();
-
+  const { refresh } = useRefresh();
+  const { data: clientes, isLoading, refetch } = useClienteQuery();
+  if (refresh) {
+    refetch();
+  }
   if (isLoading) {
     return <p>Loading...</p>;
   }

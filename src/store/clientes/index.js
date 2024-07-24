@@ -10,8 +10,22 @@ const Cliente = async () => {
 };
 
 export function useClienteQuery() {
- return useQuery({
-    queryKey: ['cliente'],
+  return useQuery({
+    queryKey: ["cliente"],
     queryFn: Cliente,
+
   });
 }
+export const ClientePost = async (data) => {
+  const api = conexionApi();
+  try {
+    const response = await api.post("clientes", data);
+    console.log(response);
+    return response.data.message;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error("Error al realizar la solicitud");
+  }
+};

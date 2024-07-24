@@ -1,11 +1,24 @@
-import React from 'react'
+import React from "react";
+import { Button } from "primereact/button";
+import { useForm } from "react-hook-form";
 
-const From = () => {
+const From = ({ onSubmit, children, valor }) => {
   return (
-    <div>
-      <input type="text" />
+    <div className="w-full ">
+      <form className="flex flex-col  gap-3 items-center" onSubmit={onSubmit}>
+        <div className="w-[450px] h-[500px] justify-between flex flex-col">
+          {children}
+        </div>
+        <div className="w-full justify-center flex">
+          <input
+            type="submit"
+            className="bg-blue-400 text-white rounded-lg w-40 h-10"
+            value={valor}
+          />
+        </div>
+      </form>
     </div>
-  )
-}
+  );
+};
 
-export default From
+export default From;
