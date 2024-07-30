@@ -51,7 +51,7 @@ export async function POST(response) {
         },
       },
     ]);
-    if (detalles) {
+    if (detalles.length >0) {
       return NextResponse.json({
         status: 200,
         message: "Productos Listados correctamente segun la Fecha indicada",
@@ -60,7 +60,7 @@ export async function POST(response) {
     } else {
       return NextResponse.json({
         status: 500,
-        message: "Error",
+        message: "No se encontraron Productos con ese Rango de Fechas",
       });
     }
   } catch (error) {

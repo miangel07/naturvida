@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+"use client";
+import { useEffect, useState } from "react";
 import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
-import { useClienteQuery, ClienteDelete, ClientePut } from "@/store/clientes";
+import { useFacturasQuery, FacturaDelete, FacturaPut } from "@/store/factura";
+
 import { Button } from "primereact/button";
 import { useRefresh } from "@/context";
 import { useMutation } from "@tanstack/react-query";
@@ -9,13 +11,20 @@ import Modal from "./Modal";
 import From from "./From";
 import { useForm } from "react-hook-form";
 import Input from "./Input";
+import { useClienteQuery } from "@/store/clientes";
+import { useVendedorQuery } from "@/store/vendedor";
+import React from "react";
+import Select from "./Select";
 
-const TableComponent = () => {
+const TableFacturas = () => {
   const [showModal, setShowModal] = useState(false);
+
   const [dataUpdate, setDataUpdate] = useState();
   const { refresh } = useRefresh();
-  const { data: clientes, isLoading, refetch } = useClienteQuery();
+  const { data: facturas, isLoading, refetch } = useFacturasQuery();
   const [idDelete, setIdDelete] = useState("");
+  const { data: clientes, isLoading: loandCliente } = useClienteQuery();
+  const { data: vendedor, isLoading: vendedoresLoading } = useVendedorQuery();
   const {
     register,
     handleSubmit,
@@ -23,15 +32,15 @@ const TableComponent = () => {
     reset,
     setValue,
   } = useForm();
+
   useEffect(() => {
-    setValue("cedula", dataUpdate?.cedula);
-    setValue("nombre", dataUpdate?.nombre);
-    setValue("direccion", dataUpdate?.direccion);
-    setValue("telefono", dataUpdate?.telefono);
-    setValue("email", dataUpdate?.email);
+    setValue("fecha", dataUpdate?.fecha);
+    setValue("cliente", dataUpdate?.cliente);
+    setValue("valorTotal", dataUpdate?.valorTotal);
+    setValue("vendedor", dataUpdate?.telefono);
   }, [dataUpdate, setValue]);
   const useMutationClientedelete = useMutation({
-    mutationFn: ClienteDelete,
+    mutationFn: FacturaDelete,
     onSuccess: (data) => {
       alert(`${data}`);
       refetch();
@@ -40,8 +49,8 @@ const TableComponent = () => {
       console.error("Error", error.message);
     },
   });
-  const useMutationClientePut = useMutation({
-    mutationFn: ClientePut,
+  const useMutationfacturaPut = useMutation({
+    mutationFn: FacturaPut,
     onSuccess: (data) => {
       alert(`${data}`);
       setShowModal(false);
@@ -59,13 +68,12 @@ const TableComponent = () => {
   const onsubmit = (data) => {
     const dataUpdateId = {
       id: dataUpdate.id,
-      cedula: data.cedula,
-      nombre: data.nombre,
-      direccion: data.direccion,
-      telefono: data.telefono,
-      email: data.email,
+      fecha: data.fecha,
+      cliente: data.cliente,
+      valorTotal: data.valorTotal,
+      vendedor: data.vendedor,
     };
-    useMutationClientePut.mutate(dataUpdateId);
+    useMutationfacturaPut.mutate(dataUpdateId);
   };
   const handleOpen = () => {
     setShowModal(false);
@@ -73,7 +81,7 @@ const TableComponent = () => {
   if (refresh) {
     refetch();
   }
-  if (isLoading) {
+  if (isLoading && loandCliente && vendedoresLoading) {
     return <p>Loading...</p>;
   }
   if (idDelete) {
@@ -83,49 +91,52 @@ const TableComponent = () => {
   const modal = showModal ? (
     <Modal
       visible={true}
-      title={"Editar Cliente"}
+      title={"Registrar Factura"}
       children={
-        <From onSubmit={handleSubmit(onsubmit)} valor={"Actualizar"}>
-          <label className="font-bold">Numero De Cedula</label>
+        <From onSubmit={handleSubmit(onsubmit)} valor={"registrar"}>
+          <label className="font-bold">fecha</label>
           <Input
             errors={errors}
-            name={"cedula"}
-            placeholder={"Ejemplo 1006452385"}
-            type={"number"}
+            name="fecha"
+            placeholder="12356"
+            type="text"
             register={register}
           />
-          <label className="font-bold">Nombre</label>
+          <label className="font-bold">cliente</label>
+          <Select
+            errors={errors}
+            register={register}
+            name={"cliente"}
+            data={clientes}
+          />
+          <label className="font-bold">valorTotal</label>
           <Input
             errors={errors}
-            name={"nombre"}
-            placeholder={"Miguel Osorio"}
-            type={"text"}
+            name="valorTotal"
+            placeholder="35000"
+            type="number"
             register={register}
           />
-          <label className="font-bold">Dirrecion</label>
-          <Input
-            errors={errors}
-            name={"direccion"}
-            placeholder={"Ejemplo 3136156071"}
-            type={"text"}
-            register={register}
-          />
-          <label className="font-bold">Telefono</label>
-          <Input
-            errors={errors}
-            name={"telefono"}
-            placeholder={"Ejemplo 1006452385"}
-            type={"number"}
-            register={register}
-          />
-          <label className="font-bold">Correo</label>
-          <Input
-            errors={errors}
-            name={"email"}
-            placeholder={"Ejemplo Miguel@gmail.com"}
-            type={"email"}
-            register={register}
-          />
+          <label className="font-bold">vendedor</label>
+
+          <select
+            {...register("vendedor", {
+              required: {
+                value: true,
+                message: `el campo vendedor es obligatorio`,
+              },
+            })}
+          >
+            <option value="">Selecione una opcion</option>
+            {vendedor?.map((item) => (
+              <option key={item._id} value={item._id}>
+                {item.usuario}
+              </option>
+            ))}
+          </select>
+          {errors.vendedor && (
+            <p className="text-amber-700">{errors.vendedor.message}</p>
+          )}
         </From>
       }
       closeModal={handleOpen}
@@ -135,22 +146,21 @@ const TableComponent = () => {
   );
 
   const nodes =
-    clientes?.map((cliente) => ({
-      key: cliente._id,
+    facturas?.map((factura) => ({
+      key: factura._id,
       data: {
-        id: cliente._id,
-        cedula: cliente.cedula,
-        nombre: cliente.nombre,
-        direccion: cliente.direccion,
-        telefono: cliente.telefono,
-        email: cliente.email,
+        id: factura._id,
+        fecha: factura.fecha,
+        cliente: factura.cliente?.nombre,
+        valorTotal: factura.valorTotal,
+        vendedor: factura.vendedor?.usuario,
       },
       actions: {
         editar: (data) => {
           handleSubmitUpdate(data);
         },
         eliminar: (_id) => {
-          setIdDelete(cliente._id);
+          setIdDelete(factura._id);
         },
       },
     })) || [];
@@ -177,15 +187,14 @@ const TableComponent = () => {
       {modal}
       <TreeTable value={nodes} tableStyle={{ minWidth: "50rem" }}>
         <Column field="id" header="ID"></Column>
-        <Column field="cedula" header="Cedula"></Column>
-        <Column field="nombre" header="Nombre"></Column>
-        <Column field="direccion" header="Direccion"></Column>
-        <Column field="telefono" header="Telefono"></Column>
-        <Column field="email" header="Email"></Column>
+        <Column field="fecha" header="fecha"></Column>
+        <Column field="cliente" header="cliente"></Column>
+        <Column field="valorTotal" header="valorTotal"></Column>
+        <Column field="vendedor" header="vendedor"></Column>
         <Column body={actionBodyTemplate} header="Acciones"></Column>
       </TreeTable>
     </div>
   );
 };
 
-export default TableComponent;
+export default TableFacturas;

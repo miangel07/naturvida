@@ -4,8 +4,8 @@ import { NextResponse } from "next/server";
 import { verificarToken } from "@/utils/middleware/token";
 
 export async function GET(req) {
-/*   const token = await verificarToken(req);
-  if (token) return token; */
+  const token = await verificarToken(req);
+  if (token) return token;
   try {
     await Conexion();
 
@@ -30,11 +30,13 @@ export async function GET(req) {
     });
   }
 }
-export async function POST(request) {
+export async function POST(req) {
+  const token = await verificarToken(req);
+  if (token) return token;
   try {
     await Conexion();
 
-    const data = await request.json();
+    const data = await req.json();
     const cliente = await clienteModels.create(data);
     if (cliente) {
       return NextResponse.json({

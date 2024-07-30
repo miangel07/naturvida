@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
-import { useClienteQuery, ClienteDelete, ClientePut } from "@/store/clientes";
+import {
+  useProductoQuery,
+  ProductoDelete,
+  ProductoPut,
+} from "@/store/productos";
 import { Button } from "primereact/button";
 import { useRefresh } from "@/context";
 import { useMutation } from "@tanstack/react-query";
@@ -10,11 +14,11 @@ import From from "./From";
 import { useForm } from "react-hook-form";
 import Input from "./Input";
 
-const TableComponent = () => {
+const TableProducto = () => {
   const [showModal, setShowModal] = useState(false);
   const [dataUpdate, setDataUpdate] = useState();
   const { refresh } = useRefresh();
-  const { data: clientes, isLoading, refetch } = useClienteQuery();
+  const { data: productos, isLoading, refetch } = useProductoQuery();
   const [idDelete, setIdDelete] = useState("");
   const {
     register,
@@ -24,14 +28,14 @@ const TableComponent = () => {
     setValue,
   } = useForm();
   useEffect(() => {
-    setValue("cedula", dataUpdate?.cedula);
-    setValue("nombre", dataUpdate?.nombre);
-    setValue("direccion", dataUpdate?.direccion);
-    setValue("telefono", dataUpdate?.telefono);
-    setValue("email", dataUpdate?.email);
+    setValue("codigo", dataUpdate?.codigo);
+    setValue("descripcion", dataUpdate?.descripcion);
+    setValue("valor", dataUpdate?.valor);
+    setValue("cantidad", dataUpdate?.cantidad);
   }, [dataUpdate, setValue]);
+  
   const useMutationClientedelete = useMutation({
-    mutationFn: ClienteDelete,
+    mutationFn: ProductoDelete,
     onSuccess: (data) => {
       alert(`${data}`);
       refetch();
@@ -41,7 +45,7 @@ const TableComponent = () => {
     },
   });
   const useMutationClientePut = useMutation({
-    mutationFn: ClientePut,
+    mutationFn: ProductoPut,
     onSuccess: (data) => {
       alert(`${data}`);
       setShowModal(false);
@@ -53,23 +57,26 @@ const TableComponent = () => {
   });
   const handleSubmitUpdate = (data) => {
     setShowModal(true);
+
     setDataUpdate(data);
   };
 
   const onsubmit = (data) => {
     const dataUpdateId = {
       id: dataUpdate.id,
-      cedula: data.cedula,
-      nombre: data.nombre,
-      direccion: data.direccion,
-      telefono: data.telefono,
-      email: data.email,
+      codigo: data.codigo,
+      descripcion: data.descripcion,
+      valor: data.valor,
+      cantidad: data.cantidad,
     };
     useMutationClientePut.mutate(dataUpdateId);
   };
   const handleOpen = () => {
     setShowModal(false);
   };
+  const handleDelate =(data)=>{
+    useMutationClientedelete.mutate(data);
+  }
   if (refresh) {
     refetch();
   }
@@ -83,47 +90,39 @@ const TableComponent = () => {
   const modal = showModal ? (
     <Modal
       visible={true}
-      title={"Editar Cliente"}
+      title={"Editar Producto"}
       children={
         <From onSubmit={handleSubmit(onsubmit)} valor={"Actualizar"}>
-          <label className="font-bold">Numero De Cedula</label>
+          <label className="font-bold">codigo</label>
           <Input
-            errors={errors}
-            name={"cedula"}
+            erros={errors}
+            name={"codigo"}
             placeholder={"Ejemplo 1006452385"}
             type={"number"}
             register={register}
           />
-          <label className="font-bold">Nombre</label>
+          <label className="font-bold">descripcion</label>
           <Input
-            errors={errors}
-            name={"nombre"}
+            erros={errors}
+            name={"descripcion"}
             placeholder={"Miguel Osorio"}
             type={"text"}
             register={register}
           />
-          <label className="font-bold">Dirrecion</label>
+          <label className="font-bold">valor</label>
           <Input
-            errors={errors}
-            name={"direccion"}
-            placeholder={"Ejemplo 3136156071"}
-            type={"text"}
-            register={register}
-          />
-          <label className="font-bold">Telefono</label>
-          <Input
-            errors={errors}
-            name={"telefono"}
-            placeholder={"Ejemplo 1006452385"}
+            erros={errors}
+            name={"valor"}
+            placeholder={"35000"}
             type={"number"}
             register={register}
           />
-          <label className="font-bold">Correo</label>
+          <label className="font-bold">cantidad</label>
           <Input
-            errors={errors}
-            name={"email"}
-            placeholder={"Ejemplo Miguel@gmail.com"}
-            type={"email"}
+            erros={errors}
+            name={"cantidad"}
+            placeholder={"Ejemplo 1006452385"}
+            type={"number"}
             register={register}
           />
         </From>
@@ -135,22 +134,22 @@ const TableComponent = () => {
   );
 
   const nodes =
-    clientes?.map((cliente) => ({
-      key: cliente._id,
+    productos?.map((producto) => ({
+      key: producto._id,
       data: {
-        id: cliente._id,
-        cedula: cliente.cedula,
-        nombre: cliente.nombre,
-        direccion: cliente.direccion,
-        telefono: cliente.telefono,
-        email: cliente.email,
+        id: producto._id,
+        codigo: producto.codigo,
+        descripcion: producto.descripcion,
+        valor: producto.valor,
+        cantidad: producto.cantidad,
       },
       actions: {
         editar: (data) => {
           handleSubmitUpdate(data);
         },
-        eliminar: (_id) => {
-          setIdDelete(cliente._id);
+        eliminar: () => {
+          handleDelate( producto._id)
+          
         },
       },
     })) || [];
@@ -177,15 +176,14 @@ const TableComponent = () => {
       {modal}
       <TreeTable value={nodes} tableStyle={{ minWidth: "50rem" }}>
         <Column field="id" header="ID"></Column>
-        <Column field="cedula" header="Cedula"></Column>
-        <Column field="nombre" header="Nombre"></Column>
-        <Column field="direccion" header="Direccion"></Column>
-        <Column field="telefono" header="Telefono"></Column>
-        <Column field="email" header="Email"></Column>
+        <Column field="codigo" header="codigo"></Column>
+        <Column field="descripcion" header="descripcion"></Column>
+        <Column field="valor" header="valor"></Column>
+        <Column field="cantidad" header="cantidad"></Column>
         <Column body={actionBodyTemplate} header="Acciones"></Column>
       </TreeTable>
     </div>
   );
 };
 
-export default TableComponent;
+export default TableProducto;

@@ -1,10 +1,16 @@
-import axios from "axios";
+import axios from 'axios';
 
-const conexionApi = () => {
-  const Api = axios.create({
-    baseURL: " http://localhost:3000/api/",
+const conexionApi = (token) => {
+ 
+  const api = axios.create({
+    baseURL: "http://localhost:3000/api/",
+    headers: {
+      'Content-Type': 'application/json',
+      'token': `${token}`
+    }
   });
-  return Api;
+
+  return api;
 };
 
 export default conexionApi;

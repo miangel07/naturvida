@@ -10,6 +10,10 @@ import { IoIosHome } from "react-icons/io";
 
 const Menu = () => {
   const router = useRouter();
+  const logout = () => {
+    localStorage.removeItem("token");
+    router.push("/login");
+  };
   const items = [
     { label: "Home", icon: <IoIosHome />, to: "/home" },
     { label: " Admin Clientes", icon: <FaRegUser />, to: "/clientes" },
@@ -21,15 +25,16 @@ const Menu = () => {
       to: "/productosVendidos",
     },
     { label: "Ventas", icon: <FaShopify />, to: "/ventas" },
-    { label: "Salir", icon: "pi pi-sign-in", to: "/login" },
+    { label: "Salir", icon: "pi pi-sign-in", command: logout },
   ];
   const handleMenuClick = (to) => {
     router.push(to);
   };
+
   const menuItems = items.map((item) => ({
     label: item.label,
     icon: item.icon,
-    command: () => handleMenuClick(item.to),
+    command: item.command ? item.command : () => handleMenuClick(item.to),
   }));
   return (
     <div>

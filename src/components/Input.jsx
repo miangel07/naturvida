@@ -1,6 +1,6 @@
 import React from "react";
 
-const Input = ({ placeholder, name, erros, type,register }) => {
+const Input = ({ placeholder, name, errors, type, register }) => {
   return (
     <div>
       <input
@@ -13,9 +13,11 @@ const Input = ({ placeholder, name, erros, type,register }) => {
             message: `${name} es obligatorio`,
           },
         })}
-     className="w-full text-black  h-[36px rounded-lg  outline-none  pl-3
-        border-solid border-2  " />
-      {erros[name] && <p className="text-amber-700">{erros[name].message}</p>}
+        className="w-full text-black h-[36px] rounded-lg outline-none pl-3 border-solid border-2"
+      />
+      {errors && errors[name] && (
+        <p className="text-amber-700">{errors[name].message}</p>
+      )}
     </div>
   );
 };

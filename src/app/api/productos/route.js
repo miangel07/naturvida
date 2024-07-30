@@ -15,7 +15,10 @@ export async function POST(request) {
     await Conexion();
     const data = await request.json();
     const producto = await productos.create(data);
-    return NextResponse.json(producto);
+    if (producto) {
+      return NextResponse.json({ message: "producto creado correactamente" })
+    }
+    return NextResponse.json({ message: "Error al crear el producto" });
   } catch (error) {
     console.log(error);
   }

@@ -32,7 +32,7 @@ export async function DELETE(response, { params }) {
         error: "producto no encontrado",
       });
     }
-    return NextResponse.json({ status: 200, producto });
+    return NextResponse.json({ status: 200, message:"Producto eliminado correctamente" });
   } catch (error) {}
 }
 
@@ -54,7 +54,7 @@ export async function PUT(request, { params }) {
         error: "producto no encontrado",
       });
     }
-    return NextResponse.json({ status: 200, producto });
+    return NextResponse.json({ status: 200,message:"producto Actualizado correctamente"});
   } catch (error) {
     console.error(error);
     return NextResponse.json({ status: 500, error: "Error interno" });

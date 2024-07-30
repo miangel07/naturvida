@@ -1,6 +1,5 @@
 import React from "react";
-import { Button } from "primereact/button";
-import { useForm } from "react-hook-form";
+
 
 const From = ({ onSubmit, children, valor }) => {
   return (
@@ -12,7 +11,7 @@ const From = ({ onSubmit, children, valor }) => {
         <div className="w-full justify-center flex">
           <input
             type="submit"
-            className="bg-blue-400 text-white rounded-lg w-40 h-10"
+            className="bg-blue-400 text-white rounded-lg w-40 h-10 cursor-pointer"
             value={valor}
           />
         </div>

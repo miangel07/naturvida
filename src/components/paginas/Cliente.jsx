@@ -51,7 +51,7 @@ const Cliente = () => {
         <From onSubmit={handleSubmit(onsubmit)} valor={"Registrar"}>
           <label className="font-bold">Numero De Cedula</label>
           <Input
-            erros={errors}
+            errors={errors}
             name={"cedula"}
             placeholder={"Ejemplo 1006452385"}
             type={"number"}
@@ -59,31 +59,31 @@ const Cliente = () => {
           />
           <label className="font-bold">Nombre</label>
           <Input
-            erros={errors}
+            errors={errors}
             name={"nombre"}
             placeholder={"Miguel Osorio"}
             type={"text"}
             register={register}
-          />{" "}
+          />
           <label className="font-bold">Dirrecion</label>
           <Input
-            erros={errors}
+            errors={errors}
             name={"direccion"}
             placeholder={"Ejemplo 3136156071"}
             type={"text"}
             register={register}
-          />{" "}
+          />
           <label className="font-bold">Telefono</label>
           <Input
-            erros={errors}
+            errors={errors}
             name={"telefono"}
             placeholder={"Ejemplo 1006452385"}
             type={"number"}
             register={register}
-          />{" "}
+          />
           <label className="font-bold">Correo</label>
           <Input
-            erros={errors}
+            errors={errors}
             name={"email"}
             placeholder={"Ejemplo Miguel@gmail.com"}
             type={"email"}

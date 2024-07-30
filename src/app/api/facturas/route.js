@@ -7,7 +7,10 @@ export async function GET() {
   await Conexion();
 
   try {
-    const facturas = await Factura.find();
+    const facturas = await Factura.find()
+    .populate("cliente","nombre")
+    .populate("vendedor","usuario")
+    .exec()
     return NextResponse.json(facturas);
   } catch (error) {
     console.error("Error al obtener las facturas:", error);
@@ -20,8 +23,13 @@ export async function POST(request) {
 
   try {
     const data = await request.json();
+
     const nuevaFactura = await Factura.create(data);
-    return NextResponse.json(nuevaFactura);
+    if(nuevaFactura){
+     
+      return NextResponse.json({message:"Factura creada correctamente"});
+    }
+    return NextResponse.json({message:"Error al crear la Factura"});
   } catch (error) {
     console.error("Error al crear la factura:", error);
     return NextResponse.json({ error: "Error al crear la factura" }, 500);
