@@ -1,8 +1,11 @@
 import { Conexion } from "../../../../../libs/mongodb";
 import detalleModels from "@/models/facturaDetalle";
+import { verificarToken } from "@/utils/middleware/token";
 import { NextResponse } from "next/server";
 
-export async function GET(response, { params }) {
+export async function GET(req, { params }) {
+  const token = await verificarToken(req);
+  if (token) return token;
   try {
     await Conexion();
     const id = params.id;
@@ -17,7 +20,9 @@ export async function GET(response, { params }) {
   }
 }
 
-export async function DELETE(response, { params }) {
+export async function DELETE(req, { params }) {
+  const token = await verificarToken(req);
+  if (token) return token;
   try {
     await Conexion();
     const id = params.id;
@@ -31,6 +36,8 @@ export async function DELETE(response, { params }) {
 }
 
 export async function PUT(request, { params }) {
+  const token = await verificarToken(request);
+  if (token) return token;
   try {
     await Conexion();
     const data = await request.json();

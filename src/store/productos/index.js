@@ -2,7 +2,12 @@ import conexionApi from "@/utils/conexion.Api";
 import { useQuery } from "@tanstack/react-query";
 
 const Producto = async () => {
-  const api = conexionApi();
+    const getToken = () => {
+    return localStorage.getItem('token');
+  };
+  const token = getToken();
+
+  const api = conexionApi(token);
   try {
     const { data } = await api.get("productos");
     return data;
@@ -19,7 +24,12 @@ export const useProductoQuery = () => {
 };
 
 export const ProductoPost = async (data) => {
-  const api = conexionApi();
+    const getToken = () => {
+    return localStorage.getItem('token');
+  };
+  const token = getToken();
+
+  const api = conexionApi(token);
   try {
     const response = await api.post("productos", data);
     console.log(response);
@@ -32,7 +42,12 @@ export const ProductoPost = async (data) => {
   }
 };
 export const ProductoDelete = async (data) => {
-  const api = conexionApi();
+    const getToken = () => {
+    return localStorage.getItem('token');
+  };
+  const token = getToken();
+
+  const api = conexionApi(token);
   console.log(data);
   try {
     const response = await api.delete(`productos/${data}`);
@@ -46,7 +61,12 @@ export const ProductoDelete = async (data) => {
   }
 };
 export const ProductoPut = async (data) => {
-  const api = conexionApi();
+    const getToken = () => {
+    return localStorage.getItem('token');
+  };
+  const token = getToken();
+
+  const api = conexionApi(token);
   console.log(data);
   try {
     const response = await api.put(`productos/${data.id}`, data);

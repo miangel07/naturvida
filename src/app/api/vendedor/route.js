@@ -2,7 +2,10 @@ import { Conexion } from "../../../../libs/mongodb";
 import vendedores from "@/models/vendedores";
 import { NextResponse } from "next/server";
 import bcryptjs from 'bcryptjs';
-export async function GET() {
+import { verificarToken } from "@/utils/middleware/token";
+export async function GET(request) {
+  const token = await verificarToken(request);
+  if (token) return token;
   try {
     await Conexion();
     const vendedor = await vendedores.find();
@@ -12,6 +15,8 @@ export async function GET() {
   }
 }
 export async function POST(request) {
+  const token = await verificarToken(request);
+  if (token) return token;
   try {
     await Conexion();
     const data = await request.json();

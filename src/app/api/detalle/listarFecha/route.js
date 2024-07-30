@@ -1,8 +1,11 @@
 import { Conexion } from "../../../../../libs/mongodb";
 import detalle from "@/models/facturaDetalle";
+import { verificarToken } from "@/utils/middleware/token";
 import { NextResponse } from "next/server";
 
 export async function POST(response) {
+  const token = await verificarToken(response);
+  if (token) return token;
   try {
     await Conexion();
     const fecha = await response.json();

@@ -1,8 +1,11 @@
 import { Conexion } from "../../../../../libs/mongodb";
 import detalle from "@/models/facturaDetalle";
+import { verificarToken } from "@/utils/middleware/token";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(response) {
+  const token = await verificarToken(response);
+  if (token) return token;
   try {
     await Conexion();
     const productosVendidosPorVendedor = await detalle.aggregate([

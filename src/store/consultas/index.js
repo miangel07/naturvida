@@ -2,7 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 import conexionApi from "@/utils/conexion.Api";
 
 const listarFactura = async () => {
-    const api = conexionApi();
+    const getToken = () => {
+        return localStorage.getItem('token');
+    };
+    const token = getToken();
+
+    const api = conexionApi(token);
     try {
         const { data } = await api.get("facturas/listarFactura");
         return data
@@ -19,9 +24,14 @@ export const useListarFacturaQuery = () => {
 }
 
 export const listarfecha = async (data) => {
-    const api = conexionApi();
+    const getToken = () => {
+        return localStorage.getItem('token');
+    };
+    const token = getToken();
+
+    const api = conexionApi(token);
     try {
-        const  response = await api.post("detalle/listarFecha",data);
+        const response = await api.post("detalle/listarFecha", data);
         return response.data
     } catch (error) {
         console.error(error);
@@ -36,7 +46,12 @@ export const useListarFechaQuery = () => {
 }
 
 export const listarDetalle = async () => {
-    const api = conexionApi();
+    const getToken = () => {
+        return localStorage.getItem('token');
+    };
+    const token = getToken();
+
+    const api = conexionApi(token);
     try {
         const { data } = await api.get("detalle/listarDetalle");
 
@@ -53,7 +68,12 @@ export const useListarDetalleQuery = () => {
     });
 }
 const vendedorProducto = async () => {
-    const api = conexionApi();
+    const getToken = () => {
+        return localStorage.getItem('token');
+    };
+    const token = getToken();
+
+    const api = conexionApi(token);
     try {
         const { data } = await api.get("detalle/vendedorProducto");
 

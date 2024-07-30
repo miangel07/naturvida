@@ -2,7 +2,12 @@ import axios from "axios";
 import conexionApi from "@/utils/conexion.Api";
 
 export const login = async (data) => {
-  const api =conexionApi()
+  const getToken = () => {
+    return localStorage.getItem('token');
+  };
+  const token = getToken();
+
+  const api = conexionApi(token);
   try {
     const response = await api.post("login", data);
     return response.data;
