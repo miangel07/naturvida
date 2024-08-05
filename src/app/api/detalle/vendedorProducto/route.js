@@ -54,6 +54,7 @@ export async function GET(response) {
         },
       },
     ]);
+    console.log(productosVendidosPorVendedor)
 
     if (productosVendidosPorVendedor) {
       return NextResponse.json({

@@ -23,13 +23,9 @@ const ProductosVendedor = () => {
   return (
     <TreeTable
       value={nodes}
-      tableStyle={{
-        minWidth: "50px",
-        justifyContent: "center",
-        display: "flex",
-        flexDirection: "column",
-      }}
     >
+      <div>
+      </div>
       <Column field="nombre" header="Nombre Producto"></Column>
       <Column field="vendedor" header="Nombre Vendedor"></Column>
     </TreeTable>

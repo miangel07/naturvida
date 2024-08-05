@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { listarfecha } from "@/store/consultas";
 
 const ListarFecha = () => {
-  const [data, setData] = useState();
+  const [data, setData] = useState(false);
   const [errorData, setErrorData] = useState("");
   const {
     register,
@@ -17,8 +17,11 @@ const ListarFecha = () => {
     onSuccess: (data) => {
       if (data.status === 200) {
         setData(data.detalles);
+        setErrorData("")
+      } else {
+        setErrorData(data.message);
+        setData(false);
       }
-      setErrorData(data.message);
     },
     onError: (error) => {
       console.log("Error:", error);
@@ -28,16 +31,16 @@ const ListarFecha = () => {
   const onsubmit = (data) => {
     useMutationListarFecha.mutate(data);
   };
-  const dataFecha =
-    data?.length > 0 ? (
-      <ul>
-        {data.map((item, index) => (
-          <li key={index}>-{item.producto.nombre}</li>
-        ))}
-      </ul>
-    ) : (
-      errorData
-    );
+  const dataFecha = data ? (
+    <ul>
+      {data.map((item, index) => (
+        <li key={index}>-{item.producto.nombre}</li>
+      ))}
+    </ul>
+  ) : (
+    ""
+  );
+  const error = errorData ? <p>{errorData}</p> : "";
   return (
     <div className="flex gap-4 flex-col">
       <p>Listar las ventas de los productos de acuerdo con un rango de fecha</p>
@@ -64,6 +67,7 @@ const ListarFecha = () => {
 
       <div>
         <p>Ventas</p>
+        {error}
         {dataFecha}
       </div>
     </div>
