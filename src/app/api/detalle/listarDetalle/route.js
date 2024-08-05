@@ -35,6 +35,10 @@ export async function GET(request) {
         },
       },
     ]);
+  
+
+
+
     if (detalles) {
       return NextResponse.json({
         status: 200,

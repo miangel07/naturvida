@@ -13,7 +13,7 @@ const ProductoDetalle = () => {
     data.detalles?.map((detalle, index) => ({
       key: index,
       data: {
-        cantidad: detalle.producto.cantidad,
+        cantidadProducto: detalle.producto.cantidad,
         id: detalle.producto._id,
         nombre: detalle.producto.nombre,
         precio: detalle.producto.precio,
@@ -23,7 +23,7 @@ const ProductoDetalle = () => {
     })) || [];
   return (
     <TreeTable value={nodes} tableStyle={{ minWidth: "50rem" }}>
-      <Column field="cantidad" header="Cantidad Producto"></Column>
+      <Column field="cantidadProducto" header="Cantidad Producto"></Column>
       <Column field="id" header="id Producto"></Column>
       <Column field="nombre" header="Nombre  Producto"></Column>
       <Column field="precio" header="Precio Producto "></Column>

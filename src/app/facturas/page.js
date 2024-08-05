@@ -1,12 +1,15 @@
+"use client"
 import Factura from '@/components/paginas/Factura'
 import React from 'react'
+import proteccionRuta from '../middleware/ProteccionRuta'
+
 
 const page = () => {
   return (
     <div>
-      <Factura/>
+      <Factura />
     </div>
   )
 }
 
-export default page
+export default proteccionRuta(page)

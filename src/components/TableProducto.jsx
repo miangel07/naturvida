@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from "react";
 import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";

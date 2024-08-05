@@ -6,7 +6,7 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import { PrimeReactProvider } from "primereact/api";
 import { RefreshProvider } from "@/context";
-import { AuthProvider } from "@/context/ProtegerRuta";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,11 +20,11 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <PrimeReactProvider>
-          <AuthProvider>
-            <RefreshProvider>
-              <Provider>{children}</Provider>
-            </RefreshProvider>
-          </AuthProvider>
+
+          <RefreshProvider>
+            <Provider>{children}</Provider>
+          </RefreshProvider>
+
         </PrimeReactProvider>
       </body>
     </html>

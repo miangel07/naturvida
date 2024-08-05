@@ -1,5 +1,7 @@
+"use client"
 import Producto from "@/components/paginas/Producto";
 import React from "react";
+import proteccionRuta from "../middleware/ProteccionRuta";
 
 const page = () => {
   return (
@@ -9,4 +11,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default proteccionRuta(page)

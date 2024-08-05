@@ -1,7 +1,9 @@
+"use client"
 import Home from "@/components/paginas/Home";
 import React from "react";
+import proteccionRuta from "../middleware/ProteccionRuta.js";
 
-const page = () => {
+const Page = () => {
   return (
     <div>
       <Home />
@@ -9,4 +11,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default proteccionRuta(Page);
