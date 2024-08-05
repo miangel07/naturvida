@@ -3,6 +3,8 @@
  * /api/clientes:
  *   get:
  *     summary: Obtiene todos los clientes
+ *     tags:
+ *       - Clientes
  *     responses:
  *       200:
  *         description: Listar Todos los clientes
@@ -19,30 +21,32 @@
  *                     example: 6690afac22c1387ff54489f0
  *                   cedula:
  *                     type: string
- *                     description: La cedula Del cliente
+ *                     description: La cédula del cliente
  *                     example: 1006459235
  *                   nombre:
  *                     type: string
  *                     description: Nombre del cliente
- *                     example: miguel
+ *                     example: Miguel
  *                   direccion:
  *                     type: string
- *                     description: Dirreccion del cliente
- *                     example: pitalito
+ *                     description: Dirección del cliente
+ *                     example: Pitalito
  *                   telefono:
  *                     type: string
- *                     description: Telefono del cliente
+ *                     description: Teléfono del cliente
  *                     example: 320226262
  *                   email:
  *                     type: string
- *                     description: El Email del usuario
+ *                     description: El email del cliente
  *                     example: miguelosoriorojas063@gmail.com
  *       404:
- *         description: "No se encontraron clientes"
+ *         description: No se encontraron clientes
  *       500:
- *         description: "Error al intentar listar clientes"
+ *         description: Error al intentar listar clientes
  *   post:
- *     summary: Crea un nuevo Cliente
+ *     summary: Crea un nuevo cliente
+ *     tags:
+ *       - Clientes
  *     requestBody:
  *       required: true
  *       content:
@@ -50,37 +54,207 @@
  *           schema:
  *             type: object
  *             properties:
- *               name:
+ *               cedula:
+ *                 type: number
+ *                 description: Cédula del cliente
+ *                 example: 1006459235
+ *               nombre:
  *                 type: string
- *                 description: The client's name
+ *                 description: Nombre del cliente
  *                 example: John Doe
+ *               direccion:
+ *                 type: string
+ *                 description: Dirección del cliente
+ *                 example: Pitalito
+ *               telefono:
+ *                 type: string
+ *                 description: Teléfono del cliente
+ *                 example: 320226262
  *               email:
  *                 type: string
- *                 description: The client's email
+ *                 description: Email del cliente
  *                 example: john.doe@example.com
  *     responses:
  *       201:
- *         description: Client created successfully
+ *         description: Cliente creado exitosamente
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 id:
+ *                 _id:
  *                   type: string
- *                   description: The client ID
+ *                   description: Id del Cliente
  *                   example: 6690afac22c1387ff54489f0
- *                 name:
+ *                 cedula:
+ *                   type: number
+ *                   description: Cédula del cliente
+ *                   example: 1006459235
+ *                 nombre:
  *                   type: string
- *                   description: The client's name
+ *                   description: Nombre del cliente
  *                   example: John Doe
+ *                 direccion:
+ *                   type: string
+ *                   description: Dirección del cliente
+ *                   example: Pitalito
+ *                 telefono:
+ *                   type: string
+ *                   description: Teléfono del cliente
+ *                   example: 320226262
  *                 email:
  *                   type: string
- *                   description: The client's email
+ *                   description: Email del cliente
  *                   example: john.doe@example.com
  *       400:
- *         description: Invalid input
+ *         description: Entrada inválida
  *       500:
- *         description: Error creating client
+ *         description: Error al crear el cliente
+ */
+
+/**
+ * @swagger
+ * /api/clientes/{id}:
+ *   get:
+ *     summary: Obtiene un cliente por ID
+ *     tags:
+ *       - Clientes
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID del cliente
+ *     responses:
+ *       200:
+ *         description: Cliente encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   description: Id del Cliente
+ *                   example: 6690afac22c1387ff54489f0
+ *                 cedula:
+ *                   type: number
+ *                   description: Cédula del cliente
+ *                   example: 1006459235
+ *                 nombre:
+ *                   type: string
+ *                   description: Nombre del cliente
+ *                   example: John Doe
+ *                 direccion:
+ *                   type: string
+ *                   description: Dirección del cliente
+ *                   example: Pitalito
+ *                 telefono:
+ *                   type: string
+ *                   description: Teléfono del cliente
+ *                   example: 320226262
+ *                 email:
+ *                   type: string
+ *                   description: Email del cliente
+ *                   example: john.doe@example.com
+ *       404:
+ *         description: Cliente no encontrado
+ *       500:
+ *         description: Error al obtener el cliente
+ *   put:
+ *     summary: Actualiza un cliente por ID
+ *     tags:
+ *       - Clientes
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID del cliente
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               cedula:
+ *                 type: number
+ *                 description: Cédula del cliente
+ *                 example: 1006459235
+ *               nombre:
+ *                 type: string
+ *                 description: Nombre del cliente
+ *                 example: John Doe
+ *               direccion:
+ *                 type: string
+ *                 description: Dirección del cliente
+ *                 example: Pitalito
+ *               telefono:
+ *                 type: string
+ *                 description: Teléfono del cliente
+ *                 example: 320226262
+ *               email:
+ *                 type: string
+ *                 description: Email del cliente
+ *                 example: john.doe@example.com
+ *     responses:
+ *       200:
+ *         description: Cliente actualizado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   description: Id del Cliente
+ *                   example: 6690afac22c1387ff54489f0
+ *                 cedula:
+ *                   type: number
+ *                   description: Cédula del cliente
+ *                   example: 1006459235
+ *                 nombre:
+ *                   type: string
+ *                   description: Nombre del cliente
+ *                   example: John Doe
+ *                 direccion:
+ *                   type: string
+ *                   description: Dirección del cliente
+ *                   example: Pitalito
+ *                 telefono:
+ *                   type: string
+ *                   description: Teléfono del cliente
+ *                   example: 320226262
+ *                 email:
+ *                   type: string
+ *                   description: Email del cliente
+ *                   example: john.doe@example.com
+ *       400:
+ *         description: Entrada inválida
+ *       404:
+ *         description: Cliente no encontrado
+ *       500:
+ *         description: Error al actualizar el cliente
+ *   delete:
+ *     summary: Elimina un cliente por ID
+ *     tags:
+ *       - Clientes
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID del cliente
+ *     responses:
+ *       200:
+ *         description: Cliente eliminado exitosamente
+ *       404:
+ *         description: Cliente no encontrado
+ *       500:
+ *         description: Error al eliminar el cliente
  */
 export const clientesDocs = {};
