@@ -1,14 +1,23 @@
 import { Conexion } from "../../../../../libs/mongodb";
 import detalle from "@/models/facturaDetalle";
 import { verificarToken } from "@/utils/middleware/token";
+import { ObjectId } from 'mongodb'
+
 import { NextResponse } from "next/server";
 
-export async function GET(response) {
+
+export async function POST(response) {
   const token = await verificarToken(response);
   if (token) return token;
   try {
     await Conexion();
+    const vendedor = await response.json()
+
+    const vendedorId = ObjectId.createFromHexString(vendedor.vendedor);
+    console.log("vendedor id", vendedorId);
+
     const productosVendidosPorVendedor = await detalle.aggregate([
+
       {
         $lookup: {
           from: "productos",
@@ -25,22 +34,16 @@ export async function GET(response) {
           from: "facturas",
           localField: "numero",
           foreignField: "_id",
-          as: "factura",
+          as: "facturas",
         },
       },
       {
-        $unwind: "$factura",
+        $unwind: "$facturas",
       },
       {
-        $lookup: {
-          from: "vendedores",
-          localField: "factura.vendedor",
-          foreignField: "_id",
-          as: "vendedor",
+        $match: {
+          "facturas.vendedor": vendedorId,
         },
-      },
-      {
-        $unwind: "$vendedor",
       },
       {
         $project: {
@@ -48,13 +51,11 @@ export async function GET(response) {
           producto: {
             nombre: "$producto.descripcion",
           },
-          vendedor: {
-            nombre: "$vendedor.usuario",
-          },
         },
       },
+
     ]);
-    console.log(productosVendidosPorVendedor)
+    console.log("consulta detalle", productosVendidosPorVendedor)
 
     if (productosVendidosPorVendedor) {
       return NextResponse.json({

@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
 import { useFacturasQuery, FacturaDelete, FacturaPut } from "@/store/factura";
-
 import { Button } from "primereact/button";
 import { useRefresh } from "@/context";
 import { useMutation } from "@tanstack/react-query";

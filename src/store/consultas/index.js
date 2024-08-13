@@ -67,25 +67,20 @@ export const useListarDetalleQuery = () => {
         queryFn: listarDetalle,
     });
 }
-const vendedorProducto = async () => {
+export const vendedorProducto = async (data) => {
     const getToken = () => {
         return localStorage.getItem('token');
     };
     const token = getToken();
-
     const api = conexionApi(token);
     try {
-        const { data } = await api.get("detalle/vendedorProducto");
 
-        return data
+        const response = await api.post("detalle/vendedorProducto", data);
+        return response.data
     } catch (error) {
         console.error(error);
     }
 }
 
-export const useVendedorProductoQuery = () => {
-    return useQuery({
-        queryKey: ["vendedorProducto"],
-        queryFn: vendedorProducto,
-    });
-}
+
+

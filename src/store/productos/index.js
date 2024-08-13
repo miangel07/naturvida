@@ -2,7 +2,7 @@ import conexionApi from "@/utils/conexion.Api";
 import { useQuery } from "@tanstack/react-query";
 
 const Producto = async () => {
-    const getToken = () => {
+  const getToken = () => {
     return localStorage.getItem('token');
   };
   const token = getToken();
@@ -24,7 +24,7 @@ export const useProductoQuery = () => {
 };
 
 export const ProductoPost = async (data) => {
-    const getToken = () => {
+  const getToken = () => {
     return localStorage.getItem('token');
   };
   const token = getToken();
@@ -42,7 +42,7 @@ export const ProductoPost = async (data) => {
   }
 };
 export const ProductoDelete = async (data) => {
-    const getToken = () => {
+  const getToken = () => {
     return localStorage.getItem('token');
   };
   const token = getToken();
@@ -61,7 +61,7 @@ export const ProductoDelete = async (data) => {
   }
 };
 export const ProductoPut = async (data) => {
-    const getToken = () => {
+  const getToken = () => {
     return localStorage.getItem('token');
   };
   const token = getToken();
@@ -79,3 +79,21 @@ export const ProductoPut = async (data) => {
     throw new Error("Error al realizar la solicitud");
   }
 };
+
+export const ProductoId = async (data) => {
+  const getToken = () => {
+    return localStorage.getItem('token');
+  };
+  const token = getToken();
+  const api = conexionApi(token);
+  try {
+    const response = await api.get(`productos/${data}`);
+
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(error.response.data.message);
+    }
+    throw new Error("Error al realizar la solicitud");
+  }
+}

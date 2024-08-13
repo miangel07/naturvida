@@ -32,7 +32,7 @@ export const FacturaPost = async (data) => {
     try {
         const response = await api.post("facturas", data);
         console.log(response);
-        return response.data.message;
+        return response.data;
     } catch (error) {
         if (error.response) {
             throw new Error(error.response.data.message);

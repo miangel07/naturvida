@@ -1,45 +1,11 @@
 "use client";
 import React from "react";
-import { useForm } from "react-hook-form";
-import { useProductoQuery } from "@/store/productos";
-import { useFacturasQuery } from "@/store/factura";
-import { detallePost } from "@/store/detalle";
-import { useMutation } from "@tanstack/react-query";
+
 
 const DetalleComponets = () => {
-  const { data: productos, isLoading } = useProductoQuery();
-  const { data: facturas, isLoading: isLoingfactura } = useFacturasQuery();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm();
-
-  const DetalleMutation = useMutation({
-    mutationFn: detallePost,
-    onSuccess: (data) => {
-      console.log(data);
-      if (data.status === 200) {
-        alert(data.data.message);
-      }
-    },
-    onError: (error) => {
-      console.log("Error al crear detalles", error);
-    },
-  });
-  const onSubmit = (data) => {
-    DetalleMutation.mutate(data);
-    reset();
-  };
-
-  if (isLoading && isLoingfactura) {
-    return <p>Loading...</p>;
-  }
-
   return (
     <div className="w-full justify-center flex items-center h-screen">
-      <form
+   {/*    <form
         className="flex w-80"
         onSubmit={handleSubmit(onSubmit)}
       >
@@ -110,7 +76,7 @@ const DetalleComponets = () => {
             enviar
           </button>
         </div>
-      </form>
+      </form> */}
     </div>
   );
 };
